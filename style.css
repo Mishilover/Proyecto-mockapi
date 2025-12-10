@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f2efff;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.09);
+}
+
+h1 {
+    text-align: center;
+    color: #6a4fc7;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #6a4fc7;
+    margin-top: 0;
+}
+
+label {
+    font-weight: bold;
+    color: #6a4fc7;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0 17px;
+    border-radius: 12px;
+    border: 1px solid #c8bfff;
+    background: #fbfaff;
+}
+
+button {
+    background: #6a4fc7;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover { background: #5940ad; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+th {
+    background: #eee;
+    color: #6a4fc7;
+    font-weight: bold;
+}
+
+.actions button {
+    margin-right: 5px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+}

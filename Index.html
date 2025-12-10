@@ -5,86 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Proyecto Final DW</title>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f2efff;
-        margin: 0;
-        padding: 20px;
-    }
-
-    .container {
-        max-width: 900px;
-        margin: auto;
-        background: white;
-        padding: 25px;
-        border-radius: 20px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.09);
-    }
-
-    h1 {
-        text-align: center;
-        color: #6a4fc7;
-        margin-bottom: 30px;
-    }
-
-    h2 {
-        color: #6a4fc7;
-        margin-top: 0;
-    }
-
-    label {
-        font-weight: bold;
-        color: #6a4fc7;
-    }
-
-    input, textarea, select {
-        width: 100%;
-        padding: 12px;
-        margin: 6px 0 17px;
-        border-radius: 12px;
-        border: 1px solid #c8bfff;
-        background: #fbfaff;
-    }
-
-    button {
-        background: #6a4fc7;
-        color: white;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-
-    button:hover { background: #5940ad; }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    th, td {
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        text-align: left;
-    }
-
-    th {
-        background: #eee;
-        color: #6a4fc7;
-        font-weight: bold;
-    }
-
-    .actions button {
-        margin-right: 5px;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 13px;
-    }
-</style>
+<!-- Vincular CSS -->
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 <div class="container">
 
@@ -96,6 +20,7 @@
     <button onclick="mostrar('personas')">👤 Personas</button>
 </div>
 
+<!-- ================= PROYECTOS ================ -->
 <div id="seccion-proyectos">
     <h2>Crear Proyecto</h2>
 
@@ -132,7 +57,7 @@
     </table>
 </div>
 
-
+<!-- ================= PERSONAS ================ -->
 <div id="seccion-personas" style="display:none;">
     <h2>Registrar Persona</h2>
 
@@ -156,130 +81,10 @@
         <tbody id="listaPersonas"></tbody>
     </table>
 </div>
+
 </div>
 
 
-<script>
-function mostrar(sec) {
-    document.getElementById('seccion-proyectos').style.display = (sec === 'proyectos') ? 'block' : 'none';
-    document.getElementById('seccion-personas').style.display = (sec === 'personas') ? 'block' : 'none';
-}
-
-// ===== APIs =====
-const API = "https://6938daea4618a71d77d1713b.mockapi.io/PROJECTS";
-const API_PERSONAS = "https://6938daea4618a71d77d1713b.mockapi.io/PERSONAS";
-
-// ===== PROYECTOS =====
-function cargar() {
-    fetch(API)
-        .then(r => r.json())
-        .then(d => {
-            lista.innerHTML = d.map(p => `
-                <tr>
-                    <td>${p.nombre}</td>
-                    <td>${p.descripcion}</td>
-                    <td>${p.estado}</td>
-                    <td>${p.fecha}</td>
-                    <td class="actions">
-                        <button onclick="editar(${p.id})">Editar</button>
-                        <button onclick="eliminar(${p.id})">Eliminar</button>
-                    </td>
-                </tr>`).join("");
-        });
-}
-
-function crear() {
-    
-    const clearProjectFields = () => {
-        nombre.value = "";
-        descripcion.value = "";
-        estado.value = "Pendiente";
-        fecha.value = "";
-    };
-    fetch(API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            nombre: nombre.value,
-            descripcion: descripcion.value,
-            estado: estado.value,
-            fecha: fecha.value
-        })
-    }).then(() => { cargar(); clearProjectFields(); });
-}
-
-function eliminar(id) {
-    fetch(`${API}/${id}`, { method: 'DELETE' })
-        .then(() => cargar());
-}
-
-function editar(id) {
-    let datos = {
-        nombre: prompt('Nuevo nombre:'),
-        descripcion: prompt('Nueva descripción:'),
-        estado: prompt('Nuevo estado:'),
-        fecha: prompt('Nueva fecha (YYYY-MM-DD):')
-    };
-
-    fetch(`${API}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-    }).then(() => cargar());
-}
-
-
-function cargarPersonas() {
-    fetch(API_PERSONAS)
-        .then(r => r.json())
-        .then(d => {
-            listaPersonas.innerHTML = d.map(p => `
-                <tr>
-                    <td>${p.nombre}</td>
-                    <td>${p.correo}</td>
-                    <td class="actions">
-                        <button onclick="editarPersona(${p.id})">Editar</button>
-                        <button onclick="eliminarPersona(${p.id})">Eliminar</button>
-                    </td>
-                </tr>`).join("");
-        });
-}
-
-function crearPersona() {
-    fetch(API_PERSONAS, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            nombre: p_nombre.value,
-            correo: p_correo.value
-        })
-    }).then(() => cargarPersonas());
-}
-
-function eliminarPersona(id) {
-    fetch(`${API_PERSONAS}/${id}`, { method: 'DELETE' })
-        .then(() => cargarPersonas());
-}
-
-function editarPersona(id) {
-    
-    const nuevoNombre = prompt('Nuevo nombre:');
-    if (nuevoNombre === null) return; // cancel
-    const nuevoCorreo = prompt('Nuevo correo:');
-    if (nuevoCorreo === null) return; // cancel
-
-    const payload = { nombre: nuevoNombre, correo: nuevoCorreo };
-
-    fetch(`${API_PERSONAS}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    }).then(() => cargarPersonas());
-}
-
-
-cargar();
-cargarPersonas();
-</script>
+<script src="app.js"></script>
 </body>
 </html>
